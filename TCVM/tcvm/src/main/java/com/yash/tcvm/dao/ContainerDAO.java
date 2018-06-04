@@ -8,9 +8,12 @@ import com.yash.tcvm.model.Container;
 
 public interface ContainerDAO {
 
-	public Container getContainer(Ingredient ingredient) throws NullFieldException;
+	public Container getContainer(Ingredient ingredient);
+
 	public Container updateContainer(Ingredient ingredient, Container container) throws NullFieldException;
+
 	public List<Container> getListOfContainers();
 	
-	
+	public Integer refillContainer() throws NullFieldException;
+
 }

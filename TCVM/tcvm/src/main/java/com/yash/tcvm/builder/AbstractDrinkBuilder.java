@@ -43,7 +43,7 @@ public abstract class AbstractDrinkBuilder implements IDrinkBuilder {
 			int noOfCups = order.getQuantity();
 			if (isUnderFlowCondition(qtyWasted, qtyConsumed, qtyAvailableInContainer, noOfCups)) {
 				order.setStatus(false);
-				throw new ContainerUnderflowException(entry.getKey() + "Insufficient");
+				throw new ContainerUnderflowException(entry.getKey() + " Insufficient");
 			}
 		}
 	}

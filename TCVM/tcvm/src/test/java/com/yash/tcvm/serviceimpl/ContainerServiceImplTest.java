@@ -1,7 +1,6 @@
 package com.yash.tcvm.serviceimpl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,26 +28,23 @@ public class ContainerServiceImplTest {
 	}
 
 	@Test(expected = NullFieldException.class)
-	public void getContainerByIngredient_IngredientIsNullGiven_ShouldReturnNullFieldException()
-			throws NullFieldException {
+	public void getContainerByIngredient_IngredientIsNullGiven_ThrowNullFieldException() throws NullFieldException {
 		Ingredient ingredient = null;
 		containerService.getContainerByIngredient(ingredient);
 	}
 
 	@Test
-	public void getContainerByIngredient_IngredientIsGiven_ShouldReturnNullFieldException() throws NullFieldException {
+	public void getContainerByIngredient_IngredientIsGiven_ShouldReturnContainerOfIngredient()
+			throws NullFieldException {
 		Ingredient ingredient = Ingredient.COFFEE;
 		Container container = new Container(ingredient, 2000.00, 2000.00);
-		List<Container> containers = Arrays.asList(new Container(Ingredient.COFFEE, 2000, 2000),
-				new Container(Ingredient.MILK, 10000, 10000), new Container(Ingredient.TEA, 2000, 2000),
-				new Container(Ingredient.WATER, 15000, 15000), new Container(Ingredient.SUGAR, 8000, 8000));
-		when(containerDAO.getListOfContainers()).thenReturn(containers);
+		when(containerDAO.getContainer(ingredient)).thenReturn(container);
 		Container requiredContainer = containerService.getContainerByIngredient(ingredient);
 		assertEquals(requiredContainer.getIngredient(), container.getIngredient());
 	}
 
 	@Test(expected = NullFieldException.class)
-	public void updateContainer_IngredientIsNullAndContainerIsNullGiven_ShouldReturnNullFieldException()
+	public void updateContainer_IngredientIsNullAndContainerIsNullGiven_ThrowNullFieldException()
 			throws NullFieldException {
 		Ingredient ingredient = null;
 		Container container = null;
@@ -56,7 +52,7 @@ public class ContainerServiceImplTest {
 	}
 
 	@Test
-	public void updateContainer_IngredientAndContainerGiven_ShouldReturnNullFieldException() throws NullFieldException {
+	public void updateContainer_IngredientAndContainerGiven_ShouldReturnUpdatedContainer() throws NullFieldException {
 		Ingredient ingredient = Ingredient.COFFEE;
 		Container container = new Container(ingredient, 2000.00, 1900.00);
 		Container updateContainer = new Container(ingredient, 2000.00, 1900.00);
@@ -67,23 +63,19 @@ public class ContainerServiceImplTest {
 
 	@Test
 	public void refillContainers_ShouldReturnSizeOfContainersList() throws NullFieldException {
-		List<Container> containers = Arrays.asList(new Container(Ingredient.COFFEE, 2000, 2000),
-				new Container(Ingredient.MILK, 10000, 10000), new Container(Ingredient.TEA, 2000, 2000),
-				new Container(Ingredient.WATER, 15000, 15000), new Container(Ingredient.SUGAR, 8000, 8000));
-		when(containerDAO.getListOfContainers()).thenReturn(containers);
-		int rowsAffected = containerService.refillContainers(); 
-		assertEquals(5,rowsAffected);
+		when(containerDAO.refillContainer()).thenReturn(4);
+		int rowsAffected = containerService.refillContainers();
+		assertEquals(4, rowsAffected);
 	}
 
 	@Test
 	public void containerStatus_ShouldReturnSizeOfContainersList() throws NullFieldException, FileNotFoundException {
-	
 		List<Container> containers = Arrays.asList(new Container(Ingredient.COFFEE, 2000, 2000),
 				new Container(Ingredient.MILK, 10000, 10000), new Container(Ingredient.TEA, 2000, 2000),
 				new Container(Ingredient.WATER, 15000, 15000), new Container(Ingredient.SUGAR, 8000, 8000));
 		when(containerDAO.getListOfContainers()).thenReturn(containers);
 		int rowsAffected = containerService.containerStatus();
-		assertEquals(5,rowsAffected);
-		}
+		assertEquals(5, rowsAffected);
+	}
 
 }

@@ -74,6 +74,7 @@ public class TCVMOperations {
 					break;
 				case 8:
 					System.exit(0);
+					System.out.println("Application Terminated successfully");
 					break;
 				}
 			} catch (Exception e) {
@@ -82,8 +83,6 @@ public class TCVMOperations {
 			System.out.println("Enter Y/N to continue?");
 			continueChoice = inputScanner.next();
 		} while (continueChoice.equalsIgnoreCase("y"));
-
-		System.out.println("-----Report can be shown here------");
 	}
 
 }

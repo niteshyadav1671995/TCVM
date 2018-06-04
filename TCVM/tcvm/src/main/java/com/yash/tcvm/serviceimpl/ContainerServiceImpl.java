@@ -2,6 +2,7 @@ package com.yash.tcvm.serviceimpl;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.yash.tcvm.dao.ContainerDAO;
 import com.yash.tcvm.daoimpl.ContainerDAOImpl;
@@ -9,7 +10,6 @@ import com.yash.tcvm.enums.Ingredient;
 import com.yash.tcvm.exception.NullFieldException;
 import com.yash.tcvm.model.Container;
 import com.yash.tcvm.service.ContainerService;
-import com.yash.tcvm.util.ReportGeneratorUtil;
 
 public class ContainerServiceImpl implements ContainerService {
 
@@ -17,6 +17,7 @@ public class ContainerServiceImpl implements ContainerService {
 
 	private static ContainerServiceImpl containerServiceImpl = new ContainerServiceImpl();
 	private ContainerDAO containerDAO;
+	private Logger logger = Logger.getLogger("ContainerServiceImpl.class");
 
 	public ContainerServiceImpl(ContainerDAO containerDAO) {
 		this.containerDAO = containerDAO;
@@ -35,18 +36,12 @@ public class ContainerServiceImpl implements ContainerService {
 		if (ingredient == null) {
 			throw new NullFieldException("Ingredient Can not Be null");
 		}
-		containers = containerDAO.getListOfContainers();
-		Container selectedContainer = null;
-		for (Container container : containers) {
-			if (container.getIngredient() == ingredient) {
-				selectedContainer = container;
-				break;
-			}
-		}
+		Container selectedContainer = containerDAO.getContainer(ingredient);
 		return selectedContainer;
 	}
 
 	public List<Container> getContainers() {
+		logger.info("Getting all containers ");
 		return containers;
 	}
 
@@ -58,23 +53,9 @@ public class ContainerServiceImpl implements ContainerService {
 		return updatedContainer;
 	}
 
-	public Integer refillContainers() throws NullFieldException {
-		containers = containerDAO.getListOfContainers();
-		double diff;
+	public Integer refillContainers() throws NullFieldException{
 		int rowsAffected = 0;
-		System.out.println("-------------------------------------------------------------------------------------------------");
-		System.out.println("|\tIngredient\t|\tEmpty\t|\tMax Quatity\t|\tCurrent Availablity\t|");
-		System.out.println("-------------------------------------------------------------------------------------------------");
-
-		for (Container container : containers) {
-			diff = container.getMaxCapacity() - container.getCurrentAvailability();
-			System.out.println("|\t" + container.getIngredient() + "\t\t|\t"+diff+"\t|\t"+ container.getMaxCapacity() + "\t\t|\t"
-					+ container.getCurrentAvailability() + "\t\t\t|");
-			container.setCurrentAvailability(container.getCurrentAvailability() + diff);
-			updateContainer(container.getIngredient(), container);
-		}
-		System.out.println("-------------------------------------------------------------------------------------------------");
-		rowsAffected = containers.size();
+		rowsAffected = containerDAO.refillContainer();
 		System.out.println("Container ReFilled Successfully");
 		return rowsAffected;
 	}

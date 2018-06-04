@@ -21,11 +21,16 @@ public class ContainerDAOImplTest {
 		containerDAO = ContainerDAOImpl.getInstance();
 	}
 
-	@Test(expected = NullFieldException.class)
-	public void getContainer_IngredientGive_ShouldThrowNullFieldException() throws NullFieldException {
-		Ingredient ingredient = null;
-		containerDAO.getContainer(ingredient);
+	// return container with specified ingr
+	@Test
+	public void getContainer_IngredientIsGiven_ShouldReturnContainerOfIngredient() throws NullFieldException {
+		Ingredient ingredient = Ingredient.COFFEE;
+		Container container = new Container(ingredient, 2000.00, 2000.00);
+		Container requiredContainer = containerDAO.getContainer(ingredient);
+		assertEquals(requiredContainer.getIngredient(), container.getIngredient());
 	}
+	
+	
 
 	@Test(expected = NullFieldException.class)
 	public void updateContainer_IngredientIsNullAndContainerIsNullGiven_ShouldReturnNullFieldException()
@@ -49,5 +54,12 @@ public class ContainerDAOImplTest {
 		int sizeOfContainers = containers.size();
 		assertEquals(5, sizeOfContainers);
 	}
+	
+	@Test
+	public void refillContainers_ShouldReturnSizeOfContainersList() throws NullFieldException {
+		int rowsAffected = containerDAO.refillContainer(); 
+		assertEquals(5,rowsAffected);
+	}
+
 
 }

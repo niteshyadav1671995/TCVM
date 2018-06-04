@@ -33,12 +33,16 @@ public class ContainerDAOImpl implements ContainerDAO {
 		return containerDAOImpl;
 	}
 
-	public Container getContainer(Ingredient ingredient) throws NullFieldException {
-		if (ingredient == null) {
-			throw new NullFieldException("Ingredient Field can not be null");
+	public Container getContainer(Ingredient ingredient) {
+		containers = getListOfContainers();
+		Container selectedContainer = null;
+		for (Container container : containers) {
+			if (container.getIngredient() == ingredient) {
+				selectedContainer = container;
+				break;
+			}
 		}
-
-		return null;
+		return selectedContainer;
 	}
 
 	public Container updateContainer(Ingredient ingredient, Container container) throws NullFieldException {
@@ -66,6 +70,29 @@ public class ContainerDAOImpl implements ContainerDAO {
 	public List<Container> getListOfContainers() {
 		containers = jsonUtil.readObjectFromJson();
 		return containers;
+	}
+
+	@Override
+	public Integer refillContainer() throws NullFieldException {
+		containers = getListOfContainers();
+		double diff;
+		int rowsAffected = 0;
+		System.out.println(
+				"-------------------------------------------------------------------------------------------------");
+		System.out.println("|\tIngredient\t|\tEmpty\t|\tMax Quatity\t|\tCurrent Availablity\t|");
+		System.out.println(
+				"-------------------------------------------------------------------------------------------------");
+		for (Container container : containers) {
+			diff = container.getMaxCapacity() - container.getCurrentAvailability();
+			System.out.println("|\t" + container.getIngredient() + "\t\t|\t" + diff + "\t|\t"
+					+ container.getMaxCapacity() + "\t\t|\t" + container.getCurrentAvailability() + "\t\t\t|");
+			container.setCurrentAvailability(container.getCurrentAvailability() + diff);
+			updateContainer(container.getIngredient(), container);
+		}
+		System.out.println(
+				"-------------------------------------------------------------------------------------------------");
+		rowsAffected= containers.size();
+		return rowsAffected;
 	}
 
 }

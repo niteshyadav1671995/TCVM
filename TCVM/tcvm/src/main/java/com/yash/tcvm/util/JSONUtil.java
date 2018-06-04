@@ -6,13 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -25,8 +21,11 @@ public class JSONUtil {
 
 	private static final String FILE_PATH_CONTAINER_JSON = "src/main/resources/Json/Container.json";
 	private static final String FILE_PATH_ORDER_JSON = "src/main/resources/Json/Order.json";
+//	private static final Logger LOGGER = Logger.getLogger("JSONUtil.class");
 
+	
 	public void writeObjectToJSON(List<Container> containerList) {
+//		logger.info("writing into file : "+FILE_PATH_CONTAINER_JSON);
 		Gson gson = new GsonBuilder().create();
 		try {
 			String containersJson = gson.toJson(containerList);
@@ -39,6 +38,7 @@ public class JSONUtil {
 	}
 
 	public List readObjectFromJson() {
+//		logger.info("Reading from file : "+FILE_PATH_CONTAINER_JSON);
 		List<Container> containers = null;
 		Gson gson = new GsonBuilder().create();
 		FileReader jsonFileReader;
@@ -57,6 +57,7 @@ public class JSONUtil {
 	}
 
 	public static void writeJSONToFile(List<Order> orders) {
+//		logger.info("writing into file : "+FILE_PATH_ORDER_JSON);
 		Gson gson = new GsonBuilder().create();
 		try {
 			String containersJson = gson.toJson(orders);
@@ -69,6 +70,7 @@ public class JSONUtil {
 	}
 
 	public static List<Order> readOrderJSONFromFile() throws FileNotFoundException, EmptyException {
+//		logger.info("Reading from file : "+FILE_PATH_ORDER_JSON);
 		List<Order> orders = null;
 		Gson gson = new GsonBuilder().create();
 		File fileToBeRead = new File(FILE_PATH_ORDER_JSON);

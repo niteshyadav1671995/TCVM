@@ -19,9 +19,12 @@ import com.yash.tcvm.service.ContainerService;
 import com.yash.tcvm.service.OrderService;
 import com.yash.tcvm.serviceimpl.ContainerServiceImpl;
 import com.yash.tcvm.serviceimpl.OrderServiceImpl;
+import com.yash.tcvm.util.TCVMMenu;
 
 public class TCVMOperations {
 	public void tcvmMenuOptions() {
+		String filePath = "src/main/resources/Menu/TCVM.txt";
+	
 		Scanner inputScanner = new Scanner(System.in);
 		ContainerDAO containerDAO = ContainerDAOImpl.getInstance();
 		ContainerService containerService = new ContainerServiceImpl(containerDAO);
@@ -31,14 +34,7 @@ public class TCVMOperations {
 		int noOfCups;
 		String continueChoice;
 		do {
-			System.out.println("1. Make Tea ");
-			System.out.println("2. Make Coffee ");
-			System.out.println("3. Make Black Tea");
-			System.out.println("4. Make Black Coffee");
-			System.out.println("5. ReFill Container");
-			System.out.println("6. Container Status");
-			System.out.println("7. Check Sales");
-			System.out.println("8. Exit TCVM");
+			TCVMMenu.getTcvmMenu(filePath);
 			choice = inputScanner.nextInt();
 			try {
 				switch (choice) {

@@ -30,6 +30,6 @@ should also have flexible reporting features.
 3. Open Eclipse. Click on File  Import  Existing Maven Projects.
 4. Import the extracted folder.
 5. Go to App.java in com.yash.tvcm package.
-6. Right Click on App.java. Select Run as  Java Application.
+6. Right Click on TCVMStart.java. Select Run as  Java Application.
 
 
